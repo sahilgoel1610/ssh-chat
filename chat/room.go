@@ -8,6 +8,7 @@ import (
 
 	"github.com/shazow/ssh-chat/chat/message"
 	"github.com/shazow/ssh-chat/set"
+	"github.com/shazow/ssh-chat/chat"
 )
 
 const historyLen = 20
@@ -229,6 +230,14 @@ func (r *Room) NamesPrefix(prefix string) []string {
 	names := make([]string, len(items))
 	for i, item := range items {
 		names[i] = item.Value().(*Member).User.Name()
+	}
+	return names
+}
+
+func (r *Room) coloredNameOfMemberSetWithTheme(items []set.Item, theme *message.Theme ) []string {
+	names := make([]string, len(items))
+	for i, item := range items {
+		names[i] = theme.ColorName(item.Value().(*Member).User)
 	}
 	return names
 }

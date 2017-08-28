@@ -10,6 +10,7 @@ import (
 
 	"github.com/shazow/ssh-chat/chat/message"
 	"github.com/shazow/ssh-chat/set"
+	"os/user"
 )
 
 // The error returned when an invalid command is issued.
@@ -174,8 +175,9 @@ func InitCommands(c *Commands) {
 		Help:   "List users who are connected.",
 		Handler: func(room *Room, msg message.CommandMsg) error {
 			// TODO: colorize
-			names := room.NamesPrefix("")
-			body := fmt.Sprintf("%d connected: %s", len(names), strings.Join(names, ", "))
+			members := room.Members.ListPrefix("")
+			coloredNames := room.coloredNameOfMemberSetWithTheme(members, msg.From().Config().Theme)
+			body := fmt.Sprintf("%d connected: %s", len(coloredNames), strings.Join(coloredNames, ", "))
 			room.Send(message.NewSystemMsg(body, msg.From()))
 			return nil
 		},
