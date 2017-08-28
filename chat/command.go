@@ -173,9 +173,9 @@ func InitCommands(c *Commands) {
 		Prefix: "/names",
 		Help:   "List users who are connected.",
 		Handler: func(room *Room, msg message.CommandMsg) error {
-			// TODO: colorize
-			names := room.NamesPrefix("")
-			body := fmt.Sprintf("%d connected: %s", len(names), strings.Join(names, ", "))
+			members := room.Members.ListPrefix("")
+			coloredNames := room.coloredNamesOfMembers(members, msg.From().Config().Theme)
+			body := fmt.Sprintf("%d connected: %s", len(coloredNames), strings.Join(coloredNames, ", "))
 			room.Send(message.NewSystemMsg(body, msg.From()))
 			return nil
 		},

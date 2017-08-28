@@ -232,3 +232,11 @@ func (r *Room) NamesPrefix(prefix string) []string {
 	}
 	return names
 }
+
+func (r *Room) coloredNamesOfMembers(items []set.Item, theme *message.Theme) []string {
+	names := make([]string, len(items))
+	for i, item := range items {
+		names[i] = theme.ColorName(item.Value().(*Member).User)
+	}
+	return names
+}
